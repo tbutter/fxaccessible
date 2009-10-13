@@ -121,7 +121,6 @@ public class NodeAccessibleContext extends AccessibleContext implements Accessib
 
     @Override
     public boolean contains(Point p) {
-        System.out.println("contains "+component+" "+p);
         Rectangle bounds = getBounds();
         return bounds.contains(p);
     }
