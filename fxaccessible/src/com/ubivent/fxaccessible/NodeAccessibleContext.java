@@ -91,7 +91,10 @@ public class NodeAccessibleContext extends AccessibleContext implements Accessib
         }
         if(old == null) {
             for(javafx.scene.Node n : nodes) {
-                firePropertyChange(ACCESSIBLE_CHILD_PROPERTY, null, n);
+                if(n instanceof Accessible) {
+                    ((NodeAccessibleContext)(((Accessible)n).getAccessibleContext())).setParent(component);
+                    firePropertyChange(ACCESSIBLE_CHILD_PROPERTY, null, n);
+                }
             }
             return;
         }
@@ -108,8 +111,13 @@ public class NodeAccessibleContext extends AccessibleContext implements Accessib
             for(Accessible n : old) {
                 if(n == a) found = true;
             }
-            if(found == false) firePropertyChange
-                (ACCESSIBLE_CHILD_PROPERTY, null, a);
+            if(found == false) {
+                if(a instanceof Accessible) {
+                    ((NodeAccessibleContext)(((Accessible)a).getAccessibleContext())).setParent(component);
+                    firePropertyChange
+                    (ACCESSIBLE_CHILD_PROPERTY, null, a);
+               }
+            }
         }
     }
 
@@ -131,10 +139,11 @@ public class NodeAccessibleContext extends AccessibleContext implements Accessib
             Stage stage = ((Scene)component).get$stage();
             return new Point((int)stage.get$x(), (int)stage.get$y());
         }
-        AccessibleComponent ac = getAccessibleParent().getAccessibleContext().getAccessibleComponent();
+        javafx.geometry.Point2D p = ((Node)component).localToScene(((Node)component).get$boundsInLocal().$minX, ((Node)component).get$boundsInLocal().$minY);
+        /*AccessibleComponent ac = getAccessibleParent().getAccessibleContext().getAccessibleComponent();
         Point parentl = ac.getLocationOnScreen();
-        Point that = getLocation();
-        Point ret = new Point(parentl.x+that.x, parentl.y+that.y);
+        Point that = getLocation();*/
+        Point ret = new Point((int)(p.get$x() + ((Node)component).get$scene().get$stage().get$x()), (int)(p.get$y() + ((Node)component).get$scene().get$stage().get$y()));
         return ret;
     }
 
@@ -257,8 +266,8 @@ public class NodeAccessibleContext extends AccessibleContext implements Accessib
     public Accessible getAccessibleChild(int index) {
         synchronized(lock) {
             if(index >= children.length) return null;
-            if(children[index].getAccessibleContext() instanceof NodeAccessibleContext)
-                ((NodeAccessibleContext)children[index].getAccessibleContext()).setParent(component);
+            //if(children[index].getAccessibleContext() instanceof NodeAccessibleContext)
+            //    ((NodeAccessibleContext)children[index].getAccessibleContext()).setParent(component);
             return children[index];
         }
     }
