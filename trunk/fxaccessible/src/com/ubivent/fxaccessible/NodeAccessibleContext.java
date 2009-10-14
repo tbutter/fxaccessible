@@ -251,9 +251,9 @@ public class NodeAccessibleContext extends AccessibleContext implements Accessib
     @Override
     public AccessibleStateSet getAccessibleStateSet() {
         AccessibleStateSet ss = new AccessibleStateSet();
-        ss.add(AccessibleState.VISIBLE);
-        ss.add(AccessibleState.ENABLED);
-        ss.add(AccessibleState.SHOWING);
+        if(isVisible()) ss.add(AccessibleState.VISIBLE);
+        if(isEnabled()) ss.add(AccessibleState.ENABLED);
+        if(isShowing()) ss.add(AccessibleState.SHOWING);
         return ss;
     }
 
@@ -337,16 +337,17 @@ public class NodeAccessibleContext extends AccessibleContext implements Accessib
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return !((Node)component).get$disabled() && isVisible();
     }
 
     @Override
     public void setEnabled(boolean b) {
+        // do nothing
     }
 
     @Override
     public boolean isVisible() {
-        return true;
+        return ((Node)component).get$visible();
     }
 
     @Override
@@ -355,7 +356,7 @@ public class NodeAccessibleContext extends AccessibleContext implements Accessib
 
     @Override
     public boolean isShowing() {
-        return true;
+        return isVisible();
     }
 
     public void setAction(Function0<Void> action) {
