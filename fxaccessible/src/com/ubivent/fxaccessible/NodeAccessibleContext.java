@@ -337,6 +337,7 @@ public class NodeAccessibleContext extends AccessibleContext implements Accessib
 
     @Override
     public boolean isEnabled() {
+        if(component instanceof Scene) return true;
         return !((Node)component).get$disabled() && isVisible();
     }
 
@@ -347,6 +348,7 @@ public class NodeAccessibleContext extends AccessibleContext implements Accessib
 
     @Override
     public boolean isVisible() {
+        if(component instanceof Scene) return true;
         return ((Node)component).get$visible();
     }
 
