@@ -235,7 +235,6 @@ public class NodeAccessibleContext extends AccessibleContext implements Accessib
 
     @Override
     public void removeFocusListener(FocusListener listener) {
-        // TODO
         }
     
     @Override

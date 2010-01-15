@@ -44,6 +44,7 @@ import javax.swing.JFrame;
 import javax.swing.JRootPane;
 
 import javax.accessibility.AccessibleRole;
+import javax.swing.JApplet;
 
 /**
  * @author thomasbutter
@@ -77,7 +78,10 @@ public class Scene extends javafx.scene.Scene, Accessible, SceneInterface {
         if(stage != null) {
             dc = new DummyContainer(this);
             //(((stage.impl_getPeer() as WindowStage).window as JFrame).getGlassPane() as JPanel).setVisible(true);
-            (((stage.impl_getPeer() as WindowStage).window as JFrame).getRootPane() as JRootPane).add(dc);
+            if(stage.impl_getPeer() instanceof WindowStage)
+                (((stage.impl_getPeer() as WindowStage).window as JFrame).getRootPane() as JRootPane).add(dc);
+            if(stage.impl_getPeer() instanceof com.sun.javafx.runtime.adapter.Applet)
+                ((stage.impl_getPeer() as JApplet).getRootPane() as JRootPane).add(dc);
             dc.setLocation(0,0);
             dc.setSize(width, height);
         }
