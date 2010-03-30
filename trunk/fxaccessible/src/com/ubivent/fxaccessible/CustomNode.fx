@@ -43,7 +43,7 @@ public abstract class CustomNode extends javafx.scene.CustomNode, Accessible {
         if(accessibleContext == null) {
             accessibleContext = new NodeAccessibleContext(this, AccessibleRole.PANEL, "");
             FX.deferAction(function() {
-                accessibleContext.setChildren([impl_content]);
+                accessibleContext.setChildren([children]);
                     });
         }
         return accessibleContext;
